@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// defines individual squares and gives them click status value
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -8,11 +9,13 @@ function Square({ value, onSquareClick }) {
   );
 }
 
+// defines squares as board
 function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+    // checks whos turn it is
     const nextSquares = squares.slice();
     if (xIsNext) {
       nextSquares[i] = 'X';
@@ -22,6 +25,7 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
+  // displays winner
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -30,6 +34,7 @@ function Board({ xIsNext, squares, onPlay }) {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
 
+  // squares/board configuration
   return (
     <>
       <div className="status">{status}</div>
@@ -52,22 +57,26 @@ function Board({ xIsNext, squares, onPlay }) {
   );
 }
 
+// main game function, handels all other components/functions
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
+  // handels moves+history
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
   }
 
+  // gives other player theyr turn
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
   }
 
+  // move history interface
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
@@ -94,7 +103,9 @@ export default function Game() {
   );
 }
 
+// winner calculations
 function calculateWinner(squares) {
+  // winning lines
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
