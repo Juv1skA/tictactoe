@@ -1,5 +1,5 @@
-export default function Square() {
-  return (
+export default function Board() {
+    return (
     <>
       <div className="board-row">
         <button className="square">1</button>
